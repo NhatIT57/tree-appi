@@ -1,0 +1,119 @@
+@url = http://localhost:80
+
+@token = eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im5ndXllbmNvbmdjaGllbkBnbWFpbC5jb20iLCJfaWQiOiI2MGM1ZTI3MGI4NmE1ZTAwMTUzMWUzMTQiLCJpc0FkbWluIjpmYWxzZX0.RH_2vyqJYzOQ9jHfAbZDUl1n-lZz4IJ-rpvc8Mz80s4
+
+###
+GET   {{url}}/
+Content-Type: application/json
+###
+GET   {{url}}/getuserbyemail
+Content-Type: application/json
+x-token: {{token}}
+
+{
+    "username": "phongvippro123123@gmail.com"
+}
+###
+GET   {{url}}/getuserbyid/606c44763edf482374deb953
+Content-Type: application/json
+# x-token: {{token}}
+
+{
+    "id": "606c44763edf482374deb953"
+}
+
+###
+###
+POST {{url}}/getcommentbypostid
+Content-Type: application/json
+# x-token: {{token}}
+
+{
+    "post_id": "60c6f12f27ce2f95850d674c"
+}
+
+###
+POST  {{url}}/createUser
+Content-Type: application/json
+
+{
+    "username": "phongvippro123123@gmail.com",
+    "password": "123456",
+    "fullname":  "nguyen thanh phong",
+    "phoneNumber": "0399201234"
+}
+###
+
+POST  {{url}}/updateProfile
+Content-Type: application/json
+
+{
+    "id": "606c44763edf482374deb953",
+    "sex":  "Nam",
+    "phone": "0399201234",
+    "born": "26/02/1998",
+    "address": "khu pho 2"
+}
+###
+POST  {{url}}/loginUser
+Content-Type: application/json
+
+{
+    "username": "phongvippro123123@gmail.com",
+    "password": "11111111"
+}
+###
+PATCH {{url}}/updatePasswordUser
+Content-Type: application/json
+x-token: {{token}}
+
+{   
+    "username": "phongvippro123123@gmail.com",
+    "password": "123456",
+    "newpassword":"11111111"
+}
+###
+POST  {{url}}/user/login
+Content-Type: application/json
+
+{
+    "username": "phongvippro10@gmail.com",
+    "password": "4561111",
+    "salt":  ""
+}
+###
+POST  {{url}}/deleteuserbyid
+Content-Type: application/json
+x-token: {{token}}
+
+{
+    "_id": "60c373486f671b277c789fba"
+}
+###
+###
+POST  {{url}}/deletepet
+Content-Type: application/json
+x-token: {{token}}
+
+{
+    "id": "60c5e270b86a5e001531e314",
+    "pet": "60c5e3cdb86a5e001531e31a"
+}
+###
+POST  {{url}}/createpet
+Content-Type: application/json
+
+{
+    "namePet": "lulu lu",
+    "color": "trang den vang",
+    "birthdate": "22/12/2022",
+    "breed": "cái",
+    "id": "606c44763edf482374deb953"
+}
+###
+###
+GET   {{url}}/getpetbyuserid/60880af96eb0562444691841
+Content-Type: application/json
+
+
+###
