@@ -41,9 +41,10 @@ module.exports = {
       if (auth) {
         const posts = await Post.find()
           .populate({ path: "user" })
-          .populate({ path: "pet" });
+          .populate({ path: "tree" });
 
         var postList = [];
+        console.log(posts)
         for (var i = 0; i < posts.length; i++) {
           postList[i] = {
             post_id: posts[i]._id,

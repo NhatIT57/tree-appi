@@ -100,7 +100,7 @@ x-token: {{token}}
     "pet": "60c5e3cdb86a5e001531e31a"
 }
 ###
-POST  {{url}}/createpet
+POST  {{url}}/createflower
 Content-Type: application/json
 
 {

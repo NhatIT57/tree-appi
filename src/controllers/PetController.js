@@ -9,25 +9,25 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const pets = await Pet.find({ user: id });
-            return res.status(200).json(pets);
+            const trees = await Pet.find({ user: id });
+            return res.status(200).json(trees);
         } catch (error) {
             return res.status(500).json({ "Error": "Invalid User Format" });
         }
     },
 
-    async showallpets(req, res) {
+    async showalltrees(req, res) {
         try {
-            const pets = await Pet.find();
-            await pets.reverse();
-            const count = await pets.length;
-            for (const item of pets) {
+            const trees = await Pet.find();
+            await trees.reverse();
+            const count = await trees.length;
+            for (const item of trees) {
                 const user = await User.find(item.user);
                 item.info = user;
             }
-            return res.status(200).json({ 'count': count, 'pets': pets });
+            return res.status(200).json({ 'count': count, 'trees': trees });
         } catch (error) {
-            return res.status(403).json({ 'Error': 'Cant Find Pets' });
+            return res.status(403).json({ 'Error': 'Cant Find trees' });
         }
 
     },
@@ -35,7 +35,7 @@ module.exports = {
 
 
 
-    async createPet(req, res) {
+    async createflower(req, res) {
         try {
             if (req.file) {
                 const { originalname: name, size, key, location: url = "" } = req.file;
@@ -43,7 +43,7 @@ module.exports = {
                     namePet,
                     color,
                     birthdate,
-                    breed,
+                    category,
                 } = req.body;
                 const id = req.body.id;
 
@@ -64,7 +64,7 @@ module.exports = {
                             namePet: namePet,
                             color: color,
                             birthdate: birthdate,
-                            breed: breed,
+                            category: category,
                             user: id,
                         })
                         return res.status(201).json(pet);
@@ -92,7 +92,7 @@ module.exports = {
                             namePet: namePet,
                             color: color,
                             birthdate: birthdate,
-                            breed: breed,
+                            category: category,
                             user: id,
                         })
                         return res.status(201).json(pet);
@@ -145,19 +145,19 @@ module.exports = {
         try {
             const user = await User.findOne({ _id: id });
             if (user) {
-                const petsData = await Pet.findOne({ user: id });
-                if (petsData) {
-                    const image = await Image.findOne({ key: petsData.picture })
+                const treesData = await Pet.findOne({ user: id });
+                if (treesData) {
+                    const image = await Image.findOne({ key: treesData.picture })
                     if (image) {
                         try {
                             await image.remove();
-                            await petsData.remove();
+                            await treesData.remove();
                         } catch (error) {
                             return 0
                         }
                     } else {
                         try {
-                            await petsData.remove();
+                            await treesData.remove();
                         } catch (error) {
                             return res.status(500).json({ "Internal Server Error": error.message });
                         }

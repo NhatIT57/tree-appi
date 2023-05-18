@@ -12,10 +12,10 @@ const PetSchema = new mongoose.Schema({
     birthdate: String,
     male: Boolean,
     state: String,
-    breed: String,
+    category: String,
     type: String,
     registerDate: String,
-    createAt: { type: Date, default: Date.now },
+    postingDate: { type: Date, default: Date.now },
     info: [],
     user: {
         type: mongoose.Schema.Types.ObjectId,

@@ -106,12 +106,12 @@ routes.post("/deleteuserbyid", admin, UserController.deleteUserById); //OK//
 
 //PETS routes
 routes.post(
-    "/createpet",
+    "/createflower",
     upload.single("profilePicture"),
-    PetController.createPet
+    PetController.createflower
 ); //OK//
 routes.get("/getpetbyuserid/:id", PetController.getPetByUserId); //OK//
-routes.get("/showallpets", PetController.showallpets); //OK//
+routes.get("/showallFlower", PetController.showalltrees); //OK//
 routes.post("/deletepet", jwt, PetController.deletepet); //OK//
 //routes.delete('/deleteallpets', PetController.deleteallpets);
 
