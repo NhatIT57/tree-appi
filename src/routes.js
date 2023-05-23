@@ -103,6 +103,11 @@ routes.get("/getuserbyemail", UserController.getUserByUsername); //OK//
 routes.get("/showallusers", UserController.showallusers); //OK//
 routes.get("/getuserbyid/:id", UserController.getUserById); //OK//
 routes.post("/deleteuserbyid", admin, UserController.deleteUserById); //OK//
+routes.post("/addFriend", UserController.addFriend); //OK//
+routes.post("/acceptFriend", UserController.acceptFriend); //OK//
+routes.post("/rejectFriend", UserController.rejectFriend); //OK//
+routes.get("/listFriend", UserController.getListFriend); //OK//
+routes.get("/listInvite", UserController.getListInvite); //OK//
 
 //PETS routes
 routes.post(

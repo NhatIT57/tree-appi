@@ -4,6 +4,7 @@ const Post = require("../models/Post");
 const Pet = require("../models/Pet");
 const Image = require("../models/Image");
 const Comment = require("../models/Comment");
+const Friend = require("../models/Friend");
 const PostController = require("../controllers/PostController");
 const PetController = require("../controllers/PetController");
 const CommentController = require("../controllers/CommentController");
@@ -191,7 +192,7 @@ module.exports = {
             auth: false,
           });
 
-          await auth.populate("user").execPopulate();
+          // await auth.populate("user").execPopulate();
 
           return res.status(201).json(auth);
         }
@@ -237,7 +238,7 @@ module.exports = {
               role = "user";
               id = getuser._id
             }
-            res.json({ token, role, id });
+            return res.json({ token, role, id });
           }
         } return res
           .status(500)
@@ -264,6 +265,132 @@ module.exports = {
         return res
           .status(500)
           .json({ Error: "Mật khẩu cũ không đúng, vui lòng kiểm tra lại!" });
+      } return res
+        .status(500)
+        .json({ Error: "Tài khoản không tồn tại!" });
+
+    } catch (error) {
+      return res.status(500).json({ "Internal Server Error": error.message });
+    }
+  },
+
+  async addFriend(req, res) {
+    try {
+      const userId = req.body.userId;
+      const targetUserId = req.body.targetUserId;
+      const user = await User.find({ _id: userId });
+      const targetUser = await User.find({ _id: targetUserId });
+      if (user && targetUser) {
+        const addFriend = await Friend.create({
+          user: userId,
+          targetUser: targetUserId,
+          state: 1,
+          status: true,
+        })
+        
+        return res.status(200).json(addFriend);
+      } return res
+        .status(500)
+        .json({ Error: "Tài khoản không tồn tại!" });
+
+    } catch (error) {
+      return res.status(500).json({ "Internal Server Error": error.message });
+    }
+  },
+
+  async acceptFriend(req, res) {
+    try {
+      const userId = req.body.userId;
+      const targetUserId = req.body.targetUserId;
+      const user = await User.find({ _id: userId });
+      const targetUser = await User.find({ _id: targetUserId });
+      if (user && targetUser) {
+        let inviteFriend = await Friend.findOne({user: userId, targetUser: targetUserId, status: true})
+        if(inviteFriend && inviteFriend.status !== 2){
+          inviteFriend.state = 2;
+          await inviteFriend.save();
+          return res.status(200).json(inviteFriend);
+        }
+        return res.status(200).json({Error: "Không có dữ liệu!"})
+      } return res
+        .status(500)
+        .json({ Error: "Tài khoản không tồn tại!" });
+
+    } catch (error) {
+      return res.status(500).json({ "Internal Server Error": error.message });
+    }
+  },
+
+  async rejectFriend(req, res) {
+    try {
+      const userId = req.body.userId;
+      const targetUserId = req.body.targetUserId;
+      const user = await User.find({ _id: userId });
+      const targetUser = await User.find({ _id: targetUserId });
+      if (user && targetUser) {
+        let inviteFriend = await Friend.findOne({user: userId, targetUser: targetUserId, status: true})
+        if(inviteFriend && inviteFriend.status !== 2){
+          inviteFriend.state = 0;
+          inviteFriend.status = false;
+          await inviteFriend.save();
+          return res.status(200).json(inviteFriend);
+        }
+        return res.status(200).json({Error: "Không có dữ liệu!"})
+      } return res
+        .status(500)
+        .json({ Error: "Tài khoản không tồn tại!" });
+
+    } catch (error) {
+      return res.status(500).json({ "Internal Server Error": error.message });
+    }
+  },
+
+  async getListInvite(req, res) {
+    try {
+      const userId = req.query.userId;
+      const user = await User.find({ _id: userId });
+      if (user) {
+        let listFrId = [];
+        const friends = await Friend.find({
+          state: 1, 
+          status: true,
+          targetUser: userId
+        });
+        friends.map(item =>{
+          listFrId.push(item.user);
+        })
+        let listFr = await User.find({
+          _id: {$in: listFrId}
+        })
+
+        return res.status(200).json(listFr);
+      } return res
+        .status(500)
+        .json({ Error: "Tài khoản không tồn tại!" });
+
+    } catch (error) {
+      return res.status(500).json({ "Internal Server Error": error.message });
+    }
+  },
+
+  async getListFriend(req, res) {
+    try {
+      const userId = req.query.userId;
+      const user = await User.find({ _id: userId });
+      if (user) {
+        let listFrId = [];
+        const friends = await Friend.find({
+          state: 2, status: true,
+          $or: [{user: userId}, {targetUser: userId}]
+        });
+        friends.map(item =>{
+          listFrId.push(item.user);
+        })
+        let listFr = await User.find({
+          _id: {$in: listFrId}
+        })
+
+        return res.status(200).json(listFr);
       } return res
         .status(500)
         .json({ Error: "Tài khoản không tồn tại!" });
