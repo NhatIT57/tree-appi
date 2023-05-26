@@ -191,7 +191,7 @@ module.exports = {
             auth: false,
           });
 
-          await auth.populate("user").execPopulate();
+          // await auth.populate("user").execPopulate();
 
           return res.status(201).json(auth);
         }
