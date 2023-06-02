@@ -345,6 +345,30 @@ module.exports = {
     }
   },
 
+  async cancelFriend(req, res) {
+    try {
+      const userId = req.body.userId;
+      const targetUserId = req.body.targetUserId;
+      const user = await User.find({ _id: userId });
+      const targetUser = await User.find({ _id: targetUserId });
+      if (user && targetUser) {
+        let isFriend = await Friend.findOne({user: userId, targetUser: targetUserId, status: true})
+        if(isFriend && inviteFriend.status == 2){
+          isFriend.state = 0;
+          isFriend.status = false;
+          await isFriend.save();
+          return res.status(200).json(isFriend);
+        }
+        return res.status(200).json({Error: "Không có dữ liệu!"})
+      } return res
+        .status(500)
+        .json({ Error: "Tài khoản không tồn tại!" });
+
+    } catch (error) {
+      return res.status(500).json({ "Internal Server Error": error.message });
+    }
+  },
+
   async getListInvite(req, res) {
     try {
       const userId = req.query.userId;
