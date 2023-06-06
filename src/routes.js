@@ -13,6 +13,7 @@ const AuthController = require("./controllers/AuthController");
 const ComplaintController = require("./controllers/ComplaintController");
 const ImageController = require("./controllers/ImageController");
 const FollowController = require("./controllers/FollowController");
+const ChatController = require("./controllers/ChatController");
 
 const routes = express.Router();
 const upload = multer(uploadConfig);
@@ -113,7 +114,9 @@ routes.get("/listFriend", UserController.getListFriend); //OK//
 routes.get("/listInvite", UserController.getListInvite); //OK//
 
 //CHATTING
-
+routes.post("/createMess", ChatController.createMess); //OK//
+routes.get("/historyMess", ChatController.getHistory); //OK//
+routes.get("/newMess", ChatController.getLastestMess); //OK//
 
 //PETS routes
 routes.post(
