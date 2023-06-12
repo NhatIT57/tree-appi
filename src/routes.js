@@ -104,6 +104,7 @@ routes.get("/getuserbyemail", UserController.getUserByUsername); //OK//
 routes.get("/showallusers", UserController.showallusers); //OK//
 routes.get("/getuserbyid/:id", UserController.getUserById); //OK//
 routes.post("/deleteuserbyid", admin, UserController.deleteUserById); //OK//
+routes.get("/searchUserByName", UserController.searchUserByName); //OK//
 
 //FRIEND
 routes.post("/addFriend", UserController.addFriend); //OK//

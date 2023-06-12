@@ -423,4 +423,19 @@ module.exports = {
       return res.status(500).json({ "Internal Server Error": error.message });
     }
   },
+
+  async searchUserByName(req, res) {
+    try {
+      const searchString = req.query.username;
+      const users = await User.find({username: { $regex: '.*' + searchString + '.*' } }).select(["-password", "-salt"]);
+      if (users) {
+        return res.status(200).json(users);
+      }
+      return res.status(500)
+        .json({ Error: "Ko có username khớp!" });
+
+    } catch (error) {
+      return res.status(500).json({ "Internal Server Error": error.message });
+    }
+  }
 };
