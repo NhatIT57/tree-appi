@@ -13,6 +13,7 @@ const AuthController = require("./controllers/AuthController");
 const ComplaintController = require("./controllers/ComplaintController");
 const ImageController = require("./controllers/ImageController");
 const FollowController = require("./controllers/FollowController");
+const ChatController = require("./controllers/ChatController");
 
 const routes = express.Router();
 const upload = multer(uploadConfig);
@@ -103,6 +104,20 @@ routes.get("/getuserbyemail", UserController.getUserByUsername); //OK//
 routes.get("/showallusers", UserController.showallusers); //OK//
 routes.get("/getuserbyid/:id", UserController.getUserById); //OK//
 routes.post("/deleteuserbyid", admin, UserController.deleteUserById); //OK//
+routes.get("/searchUserByName", UserController.searchUserByName); //OK//
+
+//FRIEND
+routes.post("/addFriend", UserController.addFriend); //OK//
+routes.post("/acceptFriend", UserController.acceptFriend); //OK//
+routes.post("/rejectFriend", UserController.rejectFriend); //OK//
+routes.post("/cancelFriend", UserController.cancelFriend); //OK//
+routes.get("/listFriend", UserController.getListFriend); //OK//
+routes.get("/listInvite", UserController.getListInvite); //OK//
+
+//CHATTING
+routes.post("/createMess", ChatController.createMess); //OK//
+routes.get("/historyMess", ChatController.getHistory); //OK//
+routes.get("/newMess", ChatController.getLastestMess); //OK//
 
 //PETS routes
 routes.post(
