@@ -280,7 +280,11 @@ module.exports = {
       const targetUserId = req.body.targetUserId;
       const user = await User.find({ _id: userId });
       const targetUser = await User.find({ _id: targetUserId });
-      if (user && targetUser) {
+      const checkDB = await Friend.findOne({user: userId, targetUser: targetUserId, status: true});
+      if(checkDB){
+        return res.status(200).json({ Error: "Đã có dữ liệu" });
+      }
+      if (user && targetUser ) {
         const addFriend = await Friend.create({
           user: userId,
           targetUser: targetUserId,
