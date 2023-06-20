@@ -332,7 +332,11 @@ module.exports = {
       const user = await User.find({ _id: userId });
       const targetUser = await User.find({ _id: targetUserId });
       if (user && targetUser) {
-        let inviteFriend = await Friend.findOne({user: userId, targetUser: targetUserId, status: true})
+        let inviteFriend = await Friend.findOne({
+          status: true,
+          user: { $in: [userId, targetUserId] }, 
+          targetUser: { $in: [userId, targetUserId] }
+        })
         if(inviteFriend && inviteFriend.status !== 2){
           inviteFriend.state = 0;
           inviteFriend.status = false;
@@ -389,7 +393,7 @@ module.exports = {
         })
         let listFr = await User.find({
           _id: {$in: listFrId}
-        })
+        }).select(["-password", "-salt"]);
 
         return res.status(200).json(listFr);
       } return res
@@ -416,7 +420,7 @@ module.exports = {
         })
         let listFr = await User.find({
           _id: {$in: listFrId}
-        })
+        }).select(["-password", "-salt"]);
 
         return res.status(200).json(listFr);
       } return res
