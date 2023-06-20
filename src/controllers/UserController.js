@@ -280,7 +280,11 @@ module.exports = {
       const targetUserId = req.body.targetUserId;
       const user = await User.find({ _id: userId });
       const targetUser = await User.find({ _id: targetUserId });
-      const checkDB = await Friend.findOne({user: userId, targetUser: targetUserId, status: true});
+      const checkDB = await Friend.findOne({
+        status: true,
+        user: { $in: [userId, targetUserId] }, 
+        targetUser: { $in: [userId, targetUserId] }
+      });
       if(checkDB){
         return res.status(200).json({ Error: "Đã có dữ liệu" });
       }
