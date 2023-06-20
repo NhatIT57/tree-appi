@@ -420,7 +420,14 @@ module.exports = {
           $or: [{user: userId}, {targetUser: userId}]
         });
         friends.map(item =>{
-          listFrId.push(item.user);
+          if(item.user != userId && item.targetUser == userId && !listFrId.includes(item.user)){
+            listFrId.push(item.user);
+          }
+
+          if(item.user == userId && item.targetUser != userId && !listFrId.includes(item.targetUser)){
+            listFrId.push(item.targetUser);
+          }
+
         })
         let listFr = await User.find({
           _id: {$in: listFrId}
