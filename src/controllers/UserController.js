@@ -365,7 +365,7 @@ module.exports = {
       const targetUser = await User.find({ _id: targetUserId });
       if (user && targetUser) {
         let isFriend = await Friend.findOne({user: userId, targetUser: targetUserId, status: true})
-        if(isFriend && inviteFriend.status == 2){
+        if(isFriend && isFriend.status == 2){
           isFriend.state = 0;
           isFriend.status = false;
           await isFriend.save();
