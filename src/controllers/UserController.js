@@ -314,7 +314,7 @@ module.exports = {
       const targetUser = await User.find({ _id: targetUserId });
       if (user && targetUser) {
         let inviteFriend = await Friend.findOne({user: userId, targetUser: targetUserId, status: true})
-        if(inviteFriend && inviteFriend.status !== 2){
+        if(inviteFriend && inviteFriend.state !== 2){
           inviteFriend.state = 2;
           await inviteFriend.save();
           return res.status(200).json(inviteFriend);
@@ -341,7 +341,7 @@ module.exports = {
           user: { $in: [userId, targetUserId] }, 
           targetUser: { $in: [userId, targetUserId] }
         })
-        if(inviteFriend && inviteFriend.status !== 2){
+        if(inviteFriend && inviteFriend.state !== 2){
           inviteFriend.state = 0;
           inviteFriend.status = false;
           await inviteFriend.save();
@@ -364,8 +364,11 @@ module.exports = {
       const user = await User.find({ _id: userId });
       const targetUser = await User.find({ _id: targetUserId });
       if (user && targetUser) {
-        let isFriend = await Friend.findOne({user: userId, targetUser: targetUserId, status: true})
-        if(isFriend && isFriend.status == 2){
+        let isFriend = await Friend.findOne({
+          user: { $in: [userId, targetUserId] }, 
+          targetUser: { $in: [userId, targetUserId] },
+          status: true})
+        if(isFriend && isFriend.state == 2){
           isFriend.state = 0;
           isFriend.status = false;
           await isFriend.save();
